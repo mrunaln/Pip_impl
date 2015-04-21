@@ -3,6 +3,7 @@ import java.util.List;
 
 import model.Tasks;
 import utils.FileHandler;
+import utils.Scheduler;
 import utils.TaskParser;
 
 /**
@@ -16,5 +17,7 @@ public class Pip_impl {
         TaskParser parser = new TaskParser();
         List<Tasks> allTasks = parser.parseLinesToTasks(lines);
         System.out.println ( allTasks.toString());
+        Scheduler scheduleMe = new Scheduler();
+        scheduleMe.getSchedule(allTasks);
     }
 }
