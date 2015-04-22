@@ -26,6 +26,24 @@ public class Tasks {
         this.resource_regions = resource_regions;
     }
 
+
+    public String getTaskName() {
+        return taskName;
+    }
+
+    public void setTaskName(String taskName) {
+        this.taskName = taskName;
+    }
+
+    public int getPhase() {
+
+        return phase;
+    }
+
+    public void setPhase(int phase) {
+        this.phase = phase;
+    }
+
     @Override
     public String toString() {
         return super.toString();

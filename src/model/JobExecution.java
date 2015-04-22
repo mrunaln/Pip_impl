@@ -3,7 +3,7 @@ package model;
 /**
  * Created by mrunalnargunde on 4/21/15.
  */
-public class JobExection {
+public class JobExecution {
     // LIST OF ACTIONS = { LOCK , UNLOCK }
     //This class is the output that I am going to write to the output file.
 
