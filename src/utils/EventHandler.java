@@ -60,13 +60,7 @@ public class EventHandler {
         {
             //System.out.println(" Task release now is = " + allTasks.get(releasedJobPosition).getTaskName());
 
-            if(allTasks.get(releasedJobPosition).getPhase() == 0){
-                job_number = 1;
-                //System.out.println(" Job number = 1 " );
-            }else{
-                job_number = current_time_instant /  allTasks.get(releasedJobPosition).getPhase();
-                //System.out.println(" Job number = " + current_time_instant /  allTasks.get(releasedJobPosition).getPhase());
-            }
+            job_number = getJobNumberofTask(current_time_instant, allTasks, releasedJobPosition);
             // This condition is not happening in the current example at any point.
             /* i.e use case : Job is released and immediately askes for resource. */
             //rm.handle_Resource_Request(current_time_instant, allTasks.get(releasedJobPosition), allTasks);
@@ -85,6 +79,19 @@ public class EventHandler {
         //System.out.println("-----------------------------------");
 
     }
+
+    private int getJobNumberofTask(int current_time_instant, List<Task> allTasks, int releasedJobPosition) {
+        int job_number;
+        if(allTasks.get(releasedJobPosition).getPhase() == 0){
+            job_number = 1;
+            //System.out.println(" Job number = 1 " );
+        }else{
+            job_number = current_time_instant /  allTasks.get(releasedJobPosition).getPhase();
+            //System.out.println(" Job number = " + current_time_instant /  allTasks.get(releasedJobPosition).getPhase());
+        }
+        return job_number;
+    }
+
     public void handle_Missed_Deadlines(int current_time_instant, List<Task> allTasks)
     {
 
