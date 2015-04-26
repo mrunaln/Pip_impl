@@ -1,7 +1,7 @@
 import java.io.IOException;
 import java.util.List;
 
-import model.Tasks;
+import model.Task;
 import utils.FileHandler;
 import utils.Scheduler;
 import utils.TaskParser;
@@ -15,7 +15,7 @@ public class Pip_impl {
         List<String> lines = f.getInputTasks();
 
         TaskParser parser = new TaskParser();
-        List<Tasks> allTasks = parser.parseLinesToTasks(lines);
+        List<Task> allTasks = parser.parseLinesToTasks(lines);
         System.out.println ( allTasks.toString());
         assign_priorities(allTasks);
 
@@ -23,7 +23,7 @@ public class Pip_impl {
         scheduleMe.getSchedule(allTasks);
     }
 
-    public static void assign_priorities(List<Tasks> allTasks){
+    public static void assign_priorities(List<Task> allTasks){
         /* According to the requirement in the document
         * If two jobs have the same absolute deadline, assign higher priority to the job that was released earlier
         * */

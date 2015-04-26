@@ -4,13 +4,15 @@ package model; /**
 import java.util.ArrayList;
 import java.util.List;
 
-public class Tasks {
+public class Task {
     int priority;
     String taskName;
     int phase, period, exec_time, deadline;
-    List<Resource_Regions> resource_regions = new ArrayList<Resource_Regions>(5);
+    List<Resource_Region> resource_regions = new ArrayList<Resource_Region>(5);
 
-    public Tasks(String taskName, int phi , int p , int e , int d){
+
+
+    public Task(String taskName, int phi, int p, int e, int d){
 
         this.taskName = taskName;
         this.phase = phi;
@@ -19,11 +21,11 @@ public class Tasks {
         this.deadline = d;
     }
 
-    public List<Resource_Regions> getResource_regions() {
+    public List<Resource_Region> getResource_regions() {
         return resource_regions;
     }
 
-    public void setResource_regions(List<Resource_Regions> resource_regions) {
+    public void setResource_regions(List<Resource_Region> resource_regions) {
         this.resource_regions = resource_regions;
     }
 
@@ -62,4 +64,15 @@ public class Tasks {
     public void setPriority(int priority) {
         this.priority = priority;
     }
- }
+
+    /* finds requested resource in list of res regions and updated current_task res_req flag */
+    public void updateResourceRegion(String resourceRequested) {
+        Resource_Region rr ;
+        for (int i = 0 ;i < getResource_regions().size() ; i++){
+            rr = getResource_regions().get(i);
+            if (rr.getResource_name().equals(resourceRequested)){
+                rr.current_requested_resource_region = true;
+            }
+        }
+    }
+}

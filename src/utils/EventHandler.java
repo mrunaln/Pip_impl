@@ -1,6 +1,6 @@
 package utils;
 
-import model.Tasks;
+import model.Task;
 
 import java.util.List;
 
@@ -19,7 +19,7 @@ public class EventHandler {
     Job Completed
     */
 
-    public int checkIfJobRelease(int current_time_instant, List<Tasks> allTasks){
+    public int checkIfJobRelease(int current_time_instant, List<Task> allTasks){
         for (int i = 0 ; i < allTasks.size() ; i++){
             if ( current_time_instant == allTasks.get(i).getPhase())
             {
@@ -33,7 +33,7 @@ public class EventHandler {
         return -1;
 
     }
-    public void handle_Job_Release(int current_time_instant, List<Tasks> allTasks)
+    public void handle_Job_Release(int current_time_instant, List<Task> allTasks)
     {
         System.out.println("-----------------------------------");
         System.out.println(" Handle job release");
@@ -54,6 +54,7 @@ public class EventHandler {
         if(releasedJobPosition != -1)
         {
             System.out.println(" Task release now is = " + allTasks.get(releasedJobPosition).getTaskName());
+
             if(allTasks.get(releasedJobPosition).getPhase() == 0){
                 System.out.println(" Job number = 1 " );
             }else{
@@ -63,6 +64,7 @@ public class EventHandler {
             ResourceManager rm = new ResourceManager();
             rm.handle_Resource_Request(current_time_instant, allTasks.get(releasedJobPosition));
 
+
         }else{
             // No currently released job found
             System.out.println("NO job release now");
@@ -71,12 +73,12 @@ public class EventHandler {
         }
         // FIXME WHO GETS TO Execute now ?
         // Job released at current time instant is found (location is releasedJobPosition )
-         // Go on updating the job execution pojo so that you will have a track of who is currently executing etc
+        // Go on updating the job execution pojo so that you will have a track of who is currently executing etc
         // Print who is executing now.
         System.out.println("-----------------------------------");
 
     }
-    public void handle_Missed_Deadlines(int current_time_instant, List<Tasks> allTasks)
+    public void handle_Missed_Deadlines(int current_time_instant, List<Task> allTasks)
     {
 
     }

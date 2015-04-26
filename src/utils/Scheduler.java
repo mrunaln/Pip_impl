@@ -1,8 +1,8 @@
 package utils;
 
-import model.JobExecution;
+import model.ExecutionQueue;
 import model.Resources;
-import model.Tasks;
+import model.Task;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,11 +14,11 @@ public class Scheduler {
      public static final Resources resources = new Resources();
 
 
-    public List<Tasks> getSchedule(List<Tasks> allTasks)
+    public List<Task> getSchedule(List<Task> allTasks)
     {
         System.out.println("Get Schedule!");
 
-        List<JobExecution> schedule = new ArrayList<JobExecution>(12); // FIXME 12 is randomly taken number
+        List<ExecutionQueue> schedule = new ArrayList<ExecutionQueue>(12); // FIXME 12 is randomly taken number
         ResourceManager rm = new ResourceManager();
         EventHandler ev = new EventHandler();
         Resources.initStatus();
@@ -26,7 +26,7 @@ public class Scheduler {
         for (int time_interval =0; time_interval<12; time_interval++) // FIXME 12 is randomly taken number
         {
             System.out.println("Time instant = " + time_interval);
-            JobExecution job = new JobExecution();
+            ExecutionQueue job = new ExecutionQueue();
             job.setTime_unit(time_interval);
 
             //rm.handle_Resource_Release(time_interval,allTasks);
@@ -41,6 +41,4 @@ public class Scheduler {
         }
         return allTasks;
     }
-
-
 }

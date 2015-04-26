@@ -3,7 +3,7 @@ package model;
 /**
  * Created by mrunalnargunde on 4/21/15.
  */
-public class Resource_Regions {
+public class Resource_Region {
     public String getResource_name() {
         return resource_name;
     }
@@ -29,11 +29,13 @@ public class Resource_Regions {
     }
 
     String resource_name;
-        int from_time, len_of_region;
+    int from_time, len_of_region;
+    boolean current_requested_resource_region;
 
-        public Resource_Regions(String rn, int f_time, int len_time){
-            this.resource_name = rn;
-            this.from_time = f_time;
-            this.len_of_region = len_time;
-        }
+    public Resource_Region(String rn, int f_time, int len_time){
+        this.resource_name = rn;
+        this.from_time = f_time;
+        this.len_of_region = len_time;
+        this.current_requested_resource_region = false;
     }
+}
