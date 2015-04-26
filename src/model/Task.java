@@ -11,6 +11,21 @@ public class Task {
     List<Resource_Region> resource_regions = new ArrayList<Resource_Region>(5);
 
 
+    public int getExec_time() {
+        return exec_time;
+    }
+
+    public void setExec_time(int exec_time) {
+        this.exec_time = exec_time;
+    }
+
+    public int getDeadline() {
+        return deadline;
+    }
+
+    public void setDeadline(int deadline) {
+        this.deadline = deadline;
+    }
 
     public Task(String taskName, int phi, int p, int e, int d){
 
@@ -71,7 +86,7 @@ public class Task {
         for (int i = 0 ;i < getResource_regions().size() ; i++){
             rr = getResource_regions().get(i);
             if (rr.getResource_name().equals(resourceRequested)){
-                rr.current_requested_resource_region = true;
+                rr.current_allocated_resource = true;
             }
         }
     }

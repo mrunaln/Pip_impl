@@ -1,26 +1,17 @@
 package model;
 
-import java.util.List;
-
 /**
- * Created by mrunalnargunde on 4/21/15.
+ * Created by mrunalnargunde on 4/26/15.
  */
-public class ExecutionQueue {
-    // LIST OF ACTIONS = { LOCK , UNLOCK }
+public class OutputSchedule {
     //This class is the output that I am going to write to the output file.
 
-    List<Task> task;
-    Resource_Region resourceRegion;
+    String TaskName;
     int time_unit;            // {0, 1, 2, 3 , 4 , 5}
     int job_number;           //1 , 2 ,3 . . .
-    String Action;
+    String Action;          // LOCK UNLOCK
+    String resourceUsed;    // R1, R2, R3
     String current_priority;
-
-    ExecutionQueue(){
-
-        // New task
-        // New resource region
-    }
 
     public int getTime_unit() {
         return time_unit;
@@ -53,6 +44,4 @@ public class ExecutionQueue {
     public void setCurrent_priority(String current_priority) {
         this.current_priority = current_priority;
     }
-
-
 }

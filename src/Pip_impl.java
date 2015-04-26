@@ -15,8 +15,8 @@ public class Pip_impl {
         List<String> lines = f.getInputTasks();
 
         TaskParser parser = new TaskParser();
+
         List<Task> allTasks = parser.parseLinesToTasks(lines);
-        System.out.println ( allTasks.toString());
         assign_priorities(allTasks);
 
         Scheduler scheduleMe = new Scheduler();

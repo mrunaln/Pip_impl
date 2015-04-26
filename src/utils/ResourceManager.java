@@ -32,47 +32,68 @@ public class ResourceManager {
             }
         }
     }
-    public void handle_Resource_Request(int current_time_instant, Task current_Task)
-    {
+    public void handle_Resource_Request(int current_time_instant,Task current_released_Task,  List<Task> allTasks) {
         /*This method is used for checking if currently released task requests for a resource immediately.*/
-        System.out.println("-----------------------------------");
-        System.out.println("Handle resource Request!");
-        List<Resource_Region> resource_regions = current_Task.getResource_regions();
-        int start_time_of_Task = current_Task.getPhase();
+        //System.out.println("-----------------------------------");
+        //System.out.println("Handle resource Request!");
+
+        List<Resource_Region> resource_regions = current_released_Task.getResource_regions();
+        //int start_time_of_Task = current_Task.getPhase();
         for (Resource_Region resource_region : resource_regions) {
 
-            if (current_time_instant == resource_region.getFrom_time() + start_time_of_Task) {
+            // THIS condition not sure of working correctly
+            if (current_time_instant == current_released_Task.getPhase() + resource_region.getFrom_time())
+            {
                 // Job is requesting a resource at current time instant
-                System.out.println("Yes job is released at curr time instant");
-                System.out.println("Now checking res availability");
-                boolean available = checkResourceAvailability(resource_region.getResource_name());
+                //System.out.println("Yes job is released at curr time instant");
+                //System.out.println("Now checking res - " +resource_region.getResource_name() +" availability for task" + current_released_Task );
+                boolean available = checkResourceAvailability(resource_region.getResource_name(), allTasks);
                 if (available) {
-                    System.out.println("Yes available . Allocating resource");
-                    allocateResource(resource_region.getResource_name(), current_Task);
+                    //System.out.println("Yes available . Allocating resource");
+                    allocateResource(resource_region.getResource_name(), current_released_Task);
                     // FIXME Check priority and execution correct job
                 } else {
                     // FIXME
-                    System.out.println("Res NOT available now");
+                    //System.out.println("Res NOT available now");
                     // Compare priority of currently res holding task
+                    // update the assigned priority in output-schedule
                 }
             } else {
                 // NO Request
-                System.out.println("No resource req at curr time");
+                //System.out.println("No resource req at curr time");
             }
         }
-
-        System.out.println("-----------------------------------");
+        //System.out.println("-----------------------------------");
     }
     // Checks if resource is free
-    public boolean checkResourceAvailability(String res_nam)
+    public boolean checkResourceAvailability(String res_name,  List<Task> allTasks)
     {
-        //Resources res = new Resources();
-        System.out.println("Checking resource Availability !");
+        /*FIXME check in all task res regions if the res is available */
+        //System.out.println("Checking" + res_name + "resource Availability !");
+        for(int i=0; i < allTasks.size() ; i++)
+        {
+            List<Resource_Region> currResRegionList = allTasks.get(i).getResource_regions();
+            for(int j=0;j< currResRegionList.size() ; j++) {
+                /* if the resource is already allocated to some other task then
+                 * return false */
+                if (currResRegionList.get(j).getResource_name().equals(res_name)
+                        && currResRegionList.get(j).isCurrent_allocated_resource()) {
+
+                    /* FIXME
+                       Maybe need to check the priority
+                    *  Maybe need to update current priority in output schedule
+                    *  */
+                    System.out.println("Resource is already allocated to task -" + allTasks.get(i).getTaskName());
+                    return false;
+                }
+            }
+        }
+       // System.out.println("Resource is currently available ");
         return true;
     }
 
     public void allocateResource(String resourceRequested, Task current_task){
         current_task.updateResourceRegion(resourceRequested);
-        System.out.println("Allocate resource!");
+        System.out.println("Allocated resource!");
     }
 }

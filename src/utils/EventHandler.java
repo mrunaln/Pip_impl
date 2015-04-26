@@ -1,8 +1,10 @@
 package utils;
 
+import model.QueueItem;
 import model.Task;
 
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by mrunalnargunde on 4/11/15.
@@ -19,6 +21,8 @@ public class EventHandler {
     Job Completed
     */
 
+
+
     public int checkIfJobRelease(int current_time_instant, List<Task> allTasks){
         for (int i = 0 ; i < allTasks.size() ; i++){
             if ( current_time_instant == allTasks.get(i).getPhase())
@@ -33,10 +37,10 @@ public class EventHandler {
         return -1;
 
     }
-    public void handle_Job_Release(int current_time_instant, List<Task> allTasks)
+    public void handle_Job_Release(int current_time_instant, List<Task> allTasks, PriorityQueue<QueueItem> queue)
     {
-        System.out.println("-----------------------------------");
-        System.out.println(" Handle job release");
+        //System.out.println("-----------------------------------");
+        //System.out.println(" Handle job release");
         /*
         Find job released at the curr instant
         if yes,
@@ -49,33 +53,36 @@ public class EventHandler {
                 if yes then EDF
                 else no then this curr job executes.
         * */
-
+        ResourceManager rm = new ResourceManager();
         int releasedJobPosition = checkIfJobRelease(current_time_instant, allTasks);
+        int job_number;
         if(releasedJobPosition != -1)
         {
-            System.out.println(" Task release now is = " + allTasks.get(releasedJobPosition).getTaskName());
+            //System.out.println(" Task release now is = " + allTasks.get(releasedJobPosition).getTaskName());
 
             if(allTasks.get(releasedJobPosition).getPhase() == 0){
-                System.out.println(" Job number = 1 " );
+                job_number = 1;
+                //System.out.println(" Job number = 1 " );
             }else{
-                System.out.println(" Job number = " + current_time_instant /  allTasks.get(releasedJobPosition).getPhase());
+                job_number = current_time_instant /  allTasks.get(releasedJobPosition).getPhase();
+                //System.out.println(" Job number = " + current_time_instant /  allTasks.get(releasedJobPosition).getPhase());
             }
-            // Checked if released job is asking for resource
-            ResourceManager rm = new ResourceManager();
-            rm.handle_Resource_Request(current_time_instant, allTasks.get(releasedJobPosition));
+            // This condition is not happening in the current example at any point.
+            /* i.e use case : Job is released and immediately askes for resource. */
+            //rm.handle_Resource_Request(current_time_instant, allTasks.get(releasedJobPosition), allTasks);
 
-
+            System.out.println(" Task " + allTasks.get(releasedJobPosition).getTaskName()+ " " + job_number + " adding to queue");
+            QueueItem singleItem = new QueueItem(job_number, allTasks.get(releasedJobPosition));
+            queue.offer(singleItem);
         }else{
             // No currently released job found
-            System.out.println("NO job release now");
-
-
+            //System.out.println("NO job release now");
         }
         // FIXME WHO GETS TO Execute now ?
         // Job released at current time instant is found (location is releasedJobPosition )
         // Go on updating the job execution pojo so that you will have a track of who is currently executing etc
         // Print who is executing now.
-        System.out.println("-----------------------------------");
+        //System.out.println("-----------------------------------");
 
     }
     public void handle_Missed_Deadlines(int current_time_instant, List<Task> allTasks)
