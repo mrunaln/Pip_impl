@@ -34,6 +34,7 @@ public class Scheduler {
             //rm.handle_Resource_Request(time_interval, allTasks);
 
             ev.handle_Job_Release(time_interval, allTasks);
+            rm.check_any_resource_request(time_interval, allTasks);
 
             //ev.handle_Missed_Deadlines(time_interval, allTasks);
             schedule.add(job);

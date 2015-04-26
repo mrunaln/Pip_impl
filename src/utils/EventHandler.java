@@ -59,9 +59,7 @@ public class EventHandler {
             }else{
                 System.out.println(" Job number = " + current_time_instant /  allTasks.get(releasedJobPosition).getPhase());
             }
-
-
-            // Job released at current time instant is found
+            // Checked if released job is asking for resource
             ResourceManager rm = new ResourceManager();
             rm.handle_Resource_Request(current_time_instant, allTasks.get(releasedJobPosition));
 
@@ -71,8 +69,10 @@ public class EventHandler {
 
 
         }
+        // FIXME WHO GETS TO Execute now ?
+        // Job released at current time instant is found (location is releasedJobPosition )
+         // Go on updating the job execution pojo so that you will have a track of who is currently executing etc
         // Print who is executing now.
-        // FIXME Who gets to execute find it here
         System.out.println("-----------------------------------");
 
     }
