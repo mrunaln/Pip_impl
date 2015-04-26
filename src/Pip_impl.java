@@ -17,9 +17,18 @@ public class Pip_impl {
         TaskParser parser = new TaskParser();
         List<Tasks> allTasks = parser.parseLinesToTasks(lines);
         System.out.println ( allTasks.toString());
-
+        assign_priorities(allTasks);
 
         Scheduler scheduleMe = new Scheduler();
         scheduleMe.getSchedule(allTasks);
+    }
+
+    public static void assign_priorities(List<Tasks> allTasks){
+        /* According to the requirement in the document
+        * If two jobs have the same absolute deadline, assign higher priority to the job that was released earlier
+        * */
+        for (int i = 0 ; i < allTasks.size(); i++){
+            allTasks.get(i).setPriority(i+1);
+        }
     }
 }

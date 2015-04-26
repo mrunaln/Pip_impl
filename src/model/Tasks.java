@@ -5,12 +5,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Tasks {
-
+    int priority;
     String taskName;
     int phase, period, exec_time, deadline;
     List<Resource_Regions> resource_regions = new ArrayList<Resource_Regions>(5);
 
     public Tasks(String taskName, int phi , int p , int e , int d){
+
         this.taskName = taskName;
         this.phase = phi;
         this.period = p;
@@ -48,4 +49,17 @@ public class Tasks {
     public String toString() {
         return super.toString();
     }
-}
+
+
+    /* According to the requirement in the document
+        * If two jobs have the same absolute deadline, assign higher priority to the job that was released earlier
+        * */
+
+    public int getPriority() {
+        return priority;
+    }
+
+    public void setPriority(int priority) {
+        this.priority = priority;
+    }
+ }
