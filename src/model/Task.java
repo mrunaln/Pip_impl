@@ -5,7 +5,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Task {
-    int priority;
+    int current_priority;
+    int assigned_priority;
     String taskName;
     int phase, period, exec_time, deadline;
     List<Resource_Region> resource_regions = new ArrayList<Resource_Region>(5);
@@ -27,10 +28,19 @@ public class Task {
         this.deadline = deadline;
     }
 
+    public int getAssigned_priority() {
+        return assigned_priority;
+    }
+
+    public void setAssigned_priority(int assigned_priority) {
+        this.assigned_priority = assigned_priority;
+    }
+
     public Task(String taskName, int phi, int p, int e, int d){
 
         this.taskName = taskName;
         this.phase = phi;
+
         this.period = p;
         this.exec_time = e;
         this.deadline = d;
@@ -69,15 +79,15 @@ public class Task {
 
 
     /* According to the requirement in the document
-        * If two jobs have the same absolute deadline, assign higher priority to the job that was released earlier
+        * If two jobs have the same absolute deadline, assign higher current_priority to the job that was released earlier
         * */
 
-    public int getPriority() {
-        return priority;
+    public int getCurrent_priority() {
+        return current_priority;
     }
 
-    public void setPriority(int priority) {
-        this.priority = priority;
+    public void setCurrent_priority(int current_priority) {
+        this.current_priority = current_priority;
     }
 
     /* finds requested resource in list of res regions and updated current_task res_req flag */

@@ -28,7 +28,8 @@ public class Pip_impl {
         * If two jobs have the same absolute deadline, assign higher priority to the job that was released earlier
         * */
         for (int i = 0 ; i < allTasks.size(); i++){
-            allTasks.get(i).setPriority(i+1);
+            allTasks.get(i).setCurrent_priority(i + 1);
+            allTasks.get(i).setAssigned_priority(i + 1); // Initially assigned priority = current_ priority
         }
     }
 }

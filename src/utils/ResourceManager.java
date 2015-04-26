@@ -47,14 +47,14 @@ public class ResourceManager {
                 // Job is requesting a resource at current time instant
                 //System.out.println("Yes job is released at curr time instant");
                 //System.out.println("Now checking res - " +resource_region.getResource_name() +" availability for task" + current_released_Task );
-                boolean available = checkResourceAvailability(resource_region.getResource_name(), allTasks);
-                if (available) {
+                int availableOrBlockedByTaskIndex = checkResourceAvailability(resource_region.getResource_name(), allTasks);
+                if (availableOrBlockedByTaskIndex == -1) {
                     //System.out.println("Yes available . Allocating resource");
                     allocateResource(resource_region.getResource_name(), current_released_Task);
                     // FIXME Check priority and execution correct job
                 } else {
                     // FIXME
-                    //System.out.println("Res NOT available now");
+                    System.out.println("Res NOT available now. Blocked by " + allTasks.get(availableOrBlockedByTaskIndex).getTaskName());
                     // Compare priority of currently res holding task
                     // update the assigned priority in output-schedule
                 }
@@ -66,7 +66,9 @@ public class ResourceManager {
         //System.out.println("-----------------------------------");
     }
     // Checks if resource is free
-    public boolean checkResourceAvailability(String res_name,  List<Task> allTasks)
+    // returns -1 if the resource is free
+    // Else returns index of task which blocked it.
+    public int checkResourceAvailability(String res_name,  List<Task> allTasks)
     {
         /*FIXME check in all task res regions if the res is available */
         //System.out.println("Checking" + res_name + "resource Availability !");
@@ -84,12 +86,12 @@ public class ResourceManager {
                     *  Maybe need to update current priority in output schedule
                     *  */
                     System.out.println("Resource is already allocated to task -" + allTasks.get(i).getTaskName());
-                    return false;
+                    return i;
                 }
             }
         }
        // System.out.println("Resource is currently available ");
-        return true;
+        return -1;
     }
 
     public void allocateResource(String resourceRequested, Task current_task){
