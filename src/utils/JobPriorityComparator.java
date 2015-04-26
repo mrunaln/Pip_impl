@@ -11,7 +11,14 @@ public class JobPriorityComparator implements Comparator<QueueItem> {
     @Override
     public int compare(QueueItem x, QueueItem y)
     {
-      if(x.getTask().getCurrent_priority() > y.getTask().getCurrent_priority()) return 1;
-      else return 0;
+        /*
+        Changed comparator for keeping the queue ascending depending on the deadline i.e EDF
+        */
+        if (x.getTask().getDeadline() == y.getTask().getDeadline()){
+            return 0;
+        }else if (x.getTask().getDeadline() > y.getTask().getDeadline()){
+            return 1;
+        }else
+            return -1;
     }
 }
