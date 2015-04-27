@@ -70,8 +70,12 @@ public class EventHandler {
         return job_number;
     }
 
-    public void handle_Missed_Deadlines(int current_time_instant, List<Task> allTasks)
+    /*If the current job missed the deadline then dont process it further*/
+    public boolean handle_Missed_Deadlines(int current_time_instant, int job_number, Task tasks)
     {
+        if( current_time_instant > tasks.getDeadline()* job_number)
+            return true;
 
+        return false;
     }
 }

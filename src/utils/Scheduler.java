@@ -31,16 +31,21 @@ public class Scheduler {
         /*FIXME Harding for now */
         QueueItem singleItem = new QueueItem(1, allTasks.get(2));
         queue.add(singleItem);
+        QueueItem execute_this_task;
         System.out.println("Time \t Task \t Job \t Resource Req");
         for (int time_interval =0; time_interval<8; time_interval++) // FIXME 12 is randomly taken number
         {
             System.out.print(time_interval + " \t\t ");
-            QueueItem execute_this_task;
+            execute_this_task = queue.poll();
 
-             execute_this_task = queue.poll();
+            boolean isDeadlineMissed = ev.handle_Missed_Deadlines(time_interval, execute_this_task.getJob_number(), execute_this_task.getTask());
+            if(isDeadlineMissed){
+                System.out.println("Deadline Missed by task "+ execute_this_task.getTask().getTaskName());
+                continue;
+            }
              execute_this_task = updateExecutionTime(execute_this_task);
 
-            System.out.print(execute_this_task.getTask().getTaskName() + " \t\t ");
+             System.out.print(execute_this_task.getTask().getTaskName() + " \t\t ");
              System.out.print(execute_this_task.getJob_number() + " \t\t ");
 
             // FIXME add current time to output schedule -> queue.setTime_unit(time_interval);
@@ -48,15 +53,10 @@ public class Scheduler {
             String resourceUnlockMessage = rm.handle_Resource_Release(time_interval,execute_this_task.getTask());
             System.out.print(resourceUnlockMessage);
 
-            //rm.handle_Resource_Request(time_interval, allTasks);
-            // Checked if released job is asking for resource
-
             queue = rm.handle_Resource_Request(time_interval+1, execute_this_task.getTask(), allTasks, queue, pip_queue);
             updateResourceRemainingTime(execute_this_task);
             ev.handle_Job_Release(time_interval+1, allTasks, queue);
 
-            //rm.check_any_resource_request(time_interval, allTasks);
-            //ev.handle_Missed_Deadlines(time_interval, allTasks);
             //FIXME outputSchedule.add();
 
 
