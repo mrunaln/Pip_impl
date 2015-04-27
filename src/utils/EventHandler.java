@@ -3,6 +3,7 @@ package utils;
 import model.QueueItem;
 import model.Task;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.PriorityQueue;
 
@@ -72,12 +73,6 @@ public class EventHandler {
             // No currently released job found
             //System.out.println("NO job release now");
         }
-        // FIXME WHO GETS TO Execute now ?
-        // Job released at current time instant is found (location is releasedJobPosition )
-        // Go on updating the job execution pojo so that you will have a track of who is currently executing etc
-        // Print who is executing now.
-        //System.out.println("-----------------------------------");
-
     }
 
     private int getJobNumberofTask(int current_time_instant, List<Task> allTasks, int releasedJobPosition) {

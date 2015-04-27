@@ -1,11 +1,14 @@
 package utils;
 
+import model.QueueItem;
 import model.Resource_Region;
 import model.Resources;
 import model.Task;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.PriorityQueue;
 
 /**
  * Created by mrunalnargunde on 4/21/15.
@@ -14,9 +17,24 @@ public class ResourceManager {
     List<Resources> all_resources = new ArrayList<Resources>(5);
 
 
-    public void handle_Resource_Release(int current_time_instant, List<Task> allTasks)
+
+    public String handle_Resource_Release(int current_time_instant, Task currentTask)
     {
-        System.out.println("Handle resource Release!");
+       // System.out.println("Handle resource Release!");
+        List<Resource_Region> resource_regions;
+        String returnMsg;
+        returnMsg = "";
+            resource_regions = currentTask.getResource_regions();
+            for (Resource_Region single_region : resource_regions) {
+                if (single_region.getRemaining_execution_time() == 0 &&
+                        single_region.isCurrent_allocated_resource()) {
+                    //System.out.println("Task " + currentTask.getTaskName() + " releases Resource - " + single_region.getResource_name() + "at time = " + current_time_instant);
+                    single_region.setCurrent_allocated_resource(false);
+                    single_region.setResource_release_time(current_time_instant);
+                    returnMsg += " Unlocks" + " " + single_region.getResource_name();
+                }
+            }
+        return returnMsg;
     }
 
     public void check_any_resource_request(int current_time, List<Task> allTasks){
@@ -26,13 +44,14 @@ public class ResourceManager {
             resource_regions = allTask.getResource_regions();
             for (Resource_Region single_region : resource_regions) {
                 if (single_region.getFrom_time() == current_time) {
-                    System.out.println("Task " + allTask.getTaskName() + " requests Resource - " + single_region.getResource_name() + " requested resource at time = " + current_time);
+                   // System.out.println("Task " + allTask.getTaskName() + " requests Resource - " + single_region.getResource_name() + " requested resource at time = " + current_time);
                     /*FIXME HANDLE this condition ahead*/
                 }
             }
         }
     }
-    public void handle_Resource_Request(int current_time_instant,Task current_released_Task,  List<Task> allTasks) {
+    public PriorityQueue<QueueItem> handle_Resource_Request(int current_time_instant,Task current_released_Task,  List<Task> allTasks,
+                                        PriorityQueue<QueueItem> queue, PriorityQueue<QueueItem> pip_queue) {
         /*This method is used for checking if currently released task requests for a resource immediately.*/
         //System.out.println("-----------------------------------");
         //System.out.println("Handle resource Request!");
@@ -42,7 +61,9 @@ public class ResourceManager {
         for (Resource_Region resource_region : resource_regions) {
 
             // THIS condition not sure of working correctly
-            if (current_time_instant == current_released_Task.getPhase() + resource_region.getFrom_time())
+            if (  resource_region.getResource_release_time() != (current_time_instant - 1) /*this condition mean the task did not just rel the res and asking it again*/
+                    &&
+                    current_time_instant >= current_released_Task.getPhase() + resource_region.getFrom_time())
             {
                 // Job is requesting a resource at current time instant
                 //System.out.println("Yes job is released at curr time instant");
@@ -54,24 +75,40 @@ public class ResourceManager {
                     // FIXME Check priority and execution correct job
                 } else {
                     // FIXME
-                    System.out.println("Res NOT available now. Blocked by " + allTasks.get(availableOrBlockedByTaskIndex).getTaskName());
+                    Task res_owning_task = allTasks.get(availableOrBlockedByTaskIndex);
+                   // System.out.println("Res NOT available now. Blocked by " + res_owning_task.getTaskName());
+                    // current_released_Task is blocked due to allTasks.get(availableOrBlockedByTaskIndex)
+
+                    // Below if intended only if C blocks B. as B high prio than C
+                    // Not executed when C blocks D.  As C high prio than D
+                    if(res_owning_task.getCurrent_priority() > current_released_Task.getCurrent_priority())
+                    {
+                        res_owning_task.setAssigned_priority(current_released_Task.getCurrent_priority() );
+                        while(!queue.isEmpty())
+                        {
+                            pip_queue.add(queue.poll());
+                        }
+                        return pip_queue;
+                    }
+                    //
                     // Compare priority of currently res holding task
                     // update the assigned priority in output-schedule
+
                 }
             } else {
                 // NO Request
-                //System.out.println("No resource req at curr time");
+               // System.out.println("No resource req at curr time");
             }
         }
         //System.out.println("-----------------------------------");
+        return queue;
     }
     // Checks if resource is free
     // returns -1 if the resource is free
     // Else returns index of task which blocked it.
     public int checkResourceAvailability(String res_name,  List<Task> allTasks)
     {
-        /*FIXME check in all task res regions if the res is available */
-        //System.out.println("Checking" + res_name + "resource Availability !");
+       // System.out.println("Checking" + res_name + "resource Availability !");
         for(int i=0; i < allTasks.size() ; i++)
         {
             List<Resource_Region> currResRegionList = allTasks.get(i).getResource_regions();
@@ -85,7 +122,8 @@ public class ResourceManager {
                        Maybe need to check the priority
                     *  Maybe need to update current priority in output schedule
                     *  */
-                    System.out.println("Resource is already allocated to task -" + allTasks.get(i).getTaskName());
+
+                    //System.out.println("Resource is already allocated to task -" + allTasks.get(i).getTaskName());
                     return i;
                 }
             }
@@ -96,6 +134,6 @@ public class ResourceManager {
 
     public void allocateResource(String resourceRequested, Task current_task){
         current_task.updateResourceRegion(resourceRequested);
-        System.out.println("Allocated resource!");
+        System.out.println("Allocated resource " + resourceRequested );
     }
 }

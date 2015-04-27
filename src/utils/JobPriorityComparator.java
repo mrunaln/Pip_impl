@@ -9,16 +9,16 @@ import java.util.Comparator;
  */
 public class JobPriorityComparator implements Comparator<QueueItem> {
     @Override
-    public int compare(QueueItem x, QueueItem y)
-    {
+    public int compare(QueueItem x, QueueItem y) {
         /*
-        Changed comparator for keeping the queue ascending depending on the deadline i.e EDF
+           when = I want x to be inserted first as x will execute bcuz it owns a resource.
         */
-        if (x.getTask().getDeadline() == y.getTask().getDeadline()){
-            return 0;
-        }else if (x.getTask().getDeadline() > y.getTask().getDeadline()){
-            return 1;
-        }else
+        if (x.getTask().getAssigned_priority() == y.getTask().getAssigned_priority()) {
             return -1;
+        } else if (x.getTask().getAssigned_priority() > y.getTask().getAssigned_priority()) {
+            return 1;
+        }
+        return 1;
     }
+
 }
