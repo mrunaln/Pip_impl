@@ -11,7 +11,6 @@ import java.util.PriorityQueue;
  * Created by mrunalnargunde on 4/21/15.
  */
 public class Scheduler {
-     public static final Resources resources = new Resources();
 
     public PriorityQueue<QueueItem> queue;
     public PriorityQueue<QueueItem> pip_queue;
@@ -28,7 +27,6 @@ public class Scheduler {
         List<OutputSchedule> outputSchedule = new ArrayList<OutputSchedule>(12); // FIXME 12 is randomly taken number
         ResourceManager rm = new ResourceManager();
         EventHandler ev = new EventHandler();
-        Resources.initStatus();
 
         /*FIXME Harding for now */
         QueueItem singleItem = new QueueItem(1, allTasks.get(2));
@@ -39,7 +37,6 @@ public class Scheduler {
             System.out.print(time_interval + " \t\t ");
             QueueItem execute_this_task;
 
-            // Peek does not remove element from the queue
              execute_this_task = queue.poll();
              execute_this_task = updateExecutionTime(execute_this_task);
 

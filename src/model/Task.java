@@ -11,44 +11,36 @@ public class Task {
     int phase, period, exec_time, deadline;
     List<Resource_Region> resource_regions = new ArrayList<Resource_Region>(5);
 
-
-    public int getExec_time() {
-        return exec_time;
-    }
-
-    public void setExec_time(int exec_time) {
-        this.exec_time = exec_time;
-    }
-
-    public int getDeadline() {
-        return deadline;
-    }
-
-    public void setDeadline(int deadline) {
-        this.deadline = deadline;
-    }
-
-    public int getAssigned_priority() {
-        return assigned_priority;
-    }
-
-    public void setAssigned_priority(int assigned_priority) {
-        this.assigned_priority = assigned_priority;
-    }
-
     public Task(String taskName, int phi, int p, int e, int d){
-
         this.taskName = taskName;
         this.phase = phi;
-
         this.period = p;
         this.exec_time = e;
         this.deadline = d;
     }
 
+
+    public int getExec_time() { return exec_time; }
+
+
+    public void setExec_time( int exec_time) { this.exec_time = exec_time; }
+
+
+    public int getDeadline() { return deadline; }
+
+
+    public int getAssigned_priority() { return assigned_priority; }
+
+
+    public void setAssigned_priority(int assigned_priority) {
+        this.assigned_priority = assigned_priority;
+    }
+
+
     public List<Resource_Region> getResource_regions() {
         return resource_regions;
     }
+
 
     public void setResource_regions(List<Resource_Region> resource_regions) {
         this.resource_regions = resource_regions;
@@ -59,18 +51,9 @@ public class Task {
         return taskName;
     }
 
-    public void setTaskName(String taskName) {
-        this.taskName = taskName;
-    }
 
-    public int getPhase() {
+    public int getPhase() { return phase; }
 
-        return phase;
-    }
-
-    public void setPhase(int phase) {
-        this.phase = phase;
-    }
 
     @Override
     public String toString() {
@@ -81,14 +64,15 @@ public class Task {
     /* According to the requirement in the document
         * If two jobs have the same absolute deadline, assign higher current_priority to the job that was released earlier
         * */
-
     public int getCurrent_priority() {
         return current_priority;
     }
 
+
     public void setCurrent_priority(int current_priority) {
         this.current_priority = current_priority;
     }
+
 
     /* finds requested resource in list of res regions and updated current_task res_req flag */
     public void updateResourceRegion(String resourceRequested) {

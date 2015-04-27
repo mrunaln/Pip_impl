@@ -12,28 +12,11 @@ import java.util.PriorityQueue;
  */
 public class EventHandler {
 
-    /*
-    Resource Release
-    Job Released
-    Resource Request
-    Resource Acquired
-    Job Aborted
-    Job Running
-    Job Completed
-    */
-
-
-
     public int checkIfJobRelease(int current_time_instant, List<Task> allTasks){
         for (int i = 0 ; i < allTasks.size() ; i++){
             if ( current_time_instant == allTasks.get(i).getPhase())
-            {
-                 // Yes i-th position task is released.
-                // job number  = current_time_instant /  allTasks.get(i).getPhase()
-                return i;
-            }
+                return i;   // Yes i-th position task is released.
         }
-
         //no currently released job found.
         return -1;
 
