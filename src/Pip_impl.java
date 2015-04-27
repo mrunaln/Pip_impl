@@ -1,6 +1,7 @@
 import java.io.IOException;
 import java.util.List;
 
+import model.OutputSchedule;
 import model.Task;
 import utils.FileHandler;
 import utils.Scheduler;
@@ -20,7 +21,7 @@ public class Pip_impl {
         assign_priorities(allTasks);
 
         Scheduler scheduleMe = new Scheduler();
-        scheduleMe.getSchedule(allTasks);
+        List<OutputSchedule> output = scheduleMe.getSchedule(allTasks);
     }
 
     public static void assign_priorities(List<Task> allTasks){

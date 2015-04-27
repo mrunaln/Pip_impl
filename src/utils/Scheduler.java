@@ -16,7 +16,7 @@ public class Scheduler {
     public PriorityQueue<QueueItem> pip_queue;
     public Comparator<QueueItem> pip_comparator = new JobPriorityComparator();
 
-    public List<Task> getSchedule(List<Task> allTasks)
+    public List<OutputSchedule> getSchedule(List<Task> allTasks)
     {
         //System.out.println("Get Schedule!");
         Comparator<QueueItem> comparator = new JobDeadlineComparator();
@@ -24,7 +24,7 @@ public class Scheduler {
 
         pip_queue = new PriorityQueue<QueueItem>(20, pip_comparator);
 
-        List<OutputSchedule> outputSchedule = new ArrayList<OutputSchedule>(12); // FIXME 12 is randomly taken number
+        List<OutputSchedule> outputScheduleList = new ArrayList<OutputSchedule>(12); // FIXME 12 is randomly taken number
         ResourceManager rm = new ResourceManager();
         EventHandler ev = new EventHandler();
 
@@ -50,8 +50,8 @@ public class Scheduler {
 
             // FIXME add current time to output schedule -> queue.setTime_unit(time_interval);
 
-            String resourceUnlockMessage = rm.handle_Resource_Release(time_interval,execute_this_task.getTask());
-            System.out.print(resourceUnlockMessage);
+            String resourceMessage = rm.handle_Resource_Release(time_interval,execute_this_task.getTask());
+            System.out.print(resourceMessage);
 
             queue = rm.handle_Resource_Request(time_interval+1, execute_this_task.getTask(), allTasks, queue, pip_queue);
             updateResourceRemainingTime(execute_this_task);
@@ -59,12 +59,15 @@ public class Scheduler {
 
             //FIXME outputSchedule.add();
 
-
             System.out.println("  ");
             System.out.println("  ");
+            outputScheduleList.add(
+                    new OutputSchedule( time_interval,
+                    execute_this_task.getTask().getTaskName() + execute_this_task.getJob_number(),
+                    resourceMessage));
 
         }
-        return allTasks;
+        return outputScheduleList;
     }
 
     private QueueItem updateExecutionTime(QueueItem execute_this_task) {
