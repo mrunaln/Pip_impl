@@ -21,7 +21,7 @@ public class EventHandler {
         return -1;
 
     }
-    public void handle_Job_Release(int current_time_instant, List<Task> allTasks, PriorityQueue<QueueItem> queue)
+    public String handle_Job_Release(int current_time_instant, List<Task> allTasks, PriorityQueue<QueueItem> queue)
     {
         //System.out.println("-----------------------------------");
         //System.out.println(" Handle job release");
@@ -50,12 +50,15 @@ public class EventHandler {
             //rm.handle_Resource_Request(current_time_instant, allTasks.get(releasedJobPosition), allTasks);
 
             System.out.println(" Task " + allTasks.get(releasedJobPosition).getTaskName()+ " " + job_number + " adding to queue");
+
             QueueItem singleItem = new QueueItem(job_number, allTasks.get(releasedJobPosition));
             queue.offer(singleItem);
+            return " Task " + allTasks.get(releasedJobPosition).getTaskName()+ " " + job_number + " adding to queue";
         }else{
             // No currently released job found
             //System.out.println("NO job release now");
         }
+        return "";
     }
 
     private int getJobNumberofTask(int current_time_instant, List<Task> allTasks, int releasedJobPosition) {

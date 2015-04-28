@@ -29,14 +29,22 @@ public class OutputSchedule {
         this.TaskJobNumber = TaskJobNumber;
     }
 
-    public String getAction() { return Action; }
+    public String getAction() {
+        if(Action != null)
+            return Action;
+        else
+           return "";
+    }
 
     public void setAction(String action) {
         Action = action;
     }
 
     public String getCurrent_priority() {
-        return current_priority;
+        if (current_priority != null)
+            return current_priority;
+        else
+            return "";
     }
 
     public void setCurrent_priority(String current_priority) {

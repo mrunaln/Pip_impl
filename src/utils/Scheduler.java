@@ -33,7 +33,8 @@ public class Scheduler {
         queue.add(singleItem);
         QueueItem execute_this_task;
         System.out.println("Time \t Task \t Job \t Resource Req");
-        for (int time_interval =0; time_interval<8; time_interval++) // FIXME 12 is randomly taken number
+        String outputScheduleAction;
+        for (int time_interval =0; time_interval<8; time_interval++)
         {
             System.out.print(time_interval + " \t\t ");
             execute_this_task = queue.poll();
@@ -48,24 +49,24 @@ public class Scheduler {
              System.out.print(execute_this_task.getTask().getTaskName() + " \t\t ");
              System.out.print(execute_this_task.getJob_number() + " \t\t ");
 
-            // FIXME add current time to output schedule -> queue.setTime_unit(time_interval);
-
             String resourceMessage = rm.handle_Resource_Release(time_interval,execute_this_task.getTask());
+            outputScheduleAction = resourceMessage;
             System.out.print(resourceMessage);
 
             queue = rm.handle_Resource_Request(time_interval+1, execute_this_task.getTask(), allTasks, queue, pip_queue);
             updateResourceRemainingTime(execute_this_task);
-            ev.handle_Job_Release(time_interval+1, allTasks, queue);
-
-            //FIXME outputSchedule.add();
+            String message = ev.handle_Job_Release(time_interval+1, allTasks, queue);
+            if(!message.isEmpty()){
+                outputScheduleAction = message;
+            }
 
             System.out.println("  ");
             System.out.println("  ");
             outputScheduleList.add(
                     new OutputSchedule( time_interval,
                     execute_this_task.getTask().getTaskName() + execute_this_task.getJob_number(),
-                    resourceMessage));
-
+                    outputScheduleAction));
+            //outputScheduleAction = ""; // resetting action;
         }
         return outputScheduleList;
     }

@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
-    final static String FILE_NAME = "/Users/mrunalnargunde/Desktop/Development/spring2015/RTES/Pip_impl/example/hw4_input.txt";
+    final static String INPUT_FILE_NAME = "/Users/mrunalnargunde/Desktop/Development/spring2015/RTES/Pip_impl/example/hw4_input.txt";
     final static String OUTPUT_FILE_NAME = "/Users/mrunalnargunde/Desktop/Development/spring2015/RTES/Pip_impl/example/hw4_output.txt";
     final static Charset ENCODING = StandardCharsets.UTF_8;
 
@@ -20,7 +20,7 @@ public class FileHandler {
         FileHandler text = new FileHandler();
         List<String> lines = null;
         try {
-             lines = text.readSmallTextFile(FILE_NAME);
+             lines = text.readSmallTextFile(INPUT_FILE_NAME);
         }catch (Exception e){
             System.out.println("Exception " + e);
         }
@@ -50,11 +50,4 @@ public class FileHandler {
         Path path = Paths.get(aFileName);
         Files.write(path, aLines, ENCODING);
     }
-
-
-    private static void log(Object aMsg){
-        System.out.println(String.valueOf(aMsg));
-    }
-
-
 }
