@@ -1,11 +1,14 @@
 package utils;
 
+import model.OutputSchedule;
+
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.List;
 
 public class FileHandler {
@@ -21,16 +24,21 @@ public class FileHandler {
         }catch (Exception e){
             System.out.println("Exception " + e);
         }
+        return lines;
+    }
 
-
-
+    public void printOutputSchedule(List<OutputSchedule> outputSchedule) {
+        FileHandler text = new FileHandler();
+        List<String> lines = new ArrayList<String>(outputSchedule.size() + 1);
+        lines.add(0, "Time \t Job \t\t Action \t Priority \t ");
+        for(int i =1 ; i < outputSchedule.size(); i ++)
+          lines.add(i, outputSchedule.get(i).toString());
 
         try {
             text.writeSmallTextFile(lines, OUTPUT_FILE_NAME);
         }catch(Exception e){
             System.out.println("Exception " + e);
         }
-        return lines;
     }
 
     List<String> readSmallTextFile(String aFileName) throws IOException {

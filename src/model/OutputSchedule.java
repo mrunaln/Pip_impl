@@ -23,7 +23,7 @@ public class OutputSchedule {
         this.time_unit = time_unit;
     }
 
-    public String TaskJobNumber() { return TaskJobNumber; }
+    public String getTaskJobNumber() { return TaskJobNumber; }
 
     public void setTaskJobNumber(String TaskJobNumber) {
         this.TaskJobNumber = TaskJobNumber;
@@ -41,5 +41,10 @@ public class OutputSchedule {
 
     public void setCurrent_priority(String current_priority) {
         this.current_priority = current_priority;
+    }
+
+    @Override
+    public String toString(){
+        return getTime_unit() + "\t" +  getTaskJobNumber() + "\t" + getAction() + "\t" + getCurrent_priority();
     }
 }

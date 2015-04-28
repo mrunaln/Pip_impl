@@ -22,6 +22,8 @@ public class Pip_impl {
 
         Scheduler scheduleMe = new Scheduler();
         List<OutputSchedule> output = scheduleMe.getSchedule(allTasks);
+
+        f.printOutputSchedule(output);
     }
 
     public static void assign_priorities(List<Task> allTasks){
