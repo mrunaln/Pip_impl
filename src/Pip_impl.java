@@ -1,5 +1,6 @@
 import java.io.IOException;
 import java.util.List;
+import java.util.Scanner;
 
 import model.OutputSchedule;
 import model.Task;
@@ -20,7 +21,11 @@ public class Pip_impl {
         List<Task> allTasks = parser.parseLinesToTasks(lines);
         assign_priorities(allTasks);
 
-        Scheduler scheduleMe = new Scheduler();
+        System.out.println("Enter number of steps you want to print the schedule - ");
+        Scanner sc = new Scanner(System.in);
+        int steps = sc.nextInt();
+
+        Scheduler scheduleMe = new Scheduler(steps);
         List<OutputSchedule> output = scheduleMe.getSchedule(allTasks);
 
         f.printOutputSchedule(output);

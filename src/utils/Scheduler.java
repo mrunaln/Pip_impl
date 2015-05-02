@@ -11,30 +11,33 @@ import java.util.PriorityQueue;
  * Created by mrunalnargunde on 4/21/15.
  */
 public class Scheduler {
-
+    int steps;
     public PriorityQueue<QueueItem> queue;
     public PriorityQueue<QueueItem> pip_queue;
-    public Comparator<QueueItem> pip_comparator = new JobPriorityComparator();
+    public Comparator<QueueItem> pip_comparator;
+    Comparator<QueueItem> comparator;
+    List<OutputSchedule> outputScheduleList;
 
+    public Scheduler(int steps){
+        this.steps = steps;
+        outputScheduleList = new ArrayList<OutputSchedule>(steps);
+        comparator = new JobDeadlineComparator();
+        pip_comparator = new JobPriorityComparator();
+        queue = new PriorityQueue<QueueItem>(steps, comparator);
+        pip_queue = new PriorityQueue<QueueItem>(steps, pip_comparator);
+    }
     public List<OutputSchedule> getSchedule(List<Task> allTasks)
     {
         //System.out.println("Get Schedule!");
-        Comparator<QueueItem> comparator = new JobDeadlineComparator();
-        queue = new PriorityQueue<QueueItem>(20, comparator);
-
-        pip_queue = new PriorityQueue<QueueItem>(20, pip_comparator);
-
-        List<OutputSchedule> outputScheduleList = new ArrayList<OutputSchedule>(12); // FIXME 12 is randomly taken number
         ResourceManager rm = new ResourceManager();
         EventHandler ev = new EventHandler();
 
-        /*FIXME Harding for now */
         QueueItem singleItem = new QueueItem(1, allTasks.get(2));
         queue.add(singleItem);
         QueueItem execute_this_task;
         System.out.println("Time \t Task \t Job \t Resource Req");
         String outputScheduleAction;
-        for (int time_interval =0; time_interval<8; time_interval++)
+        for (int time_interval =0; time_interval< steps; time_interval++)
         {
             System.out.print(time_interval + " \t\t ");
             execute_this_task = queue.poll();
